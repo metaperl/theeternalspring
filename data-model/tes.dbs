@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="the_eternal_spring" database="Sqlite" >
+	<comment>The Eternal Spring</comment>
+	<schema name="Default" schemaname="Default" >
+		<table name="opportunities" >
+			<comment>the various mlm opportunities</comment>
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="work" type="INT" jt="4" >
+				<defo>5</defo>
+				<comment> <![CDATA[the number of minutes per day required in this business]]> </comment>
+			</column>
+			<column name="work_description" type="TEXT" jt="-1" />
+			<column name="cost_min" type="INT" jt="4" mandatory="y" />
+			<column name="cost_max" type="INT" jt="4" />
+			<column name="profit_profile" type="TEXT" jt="-1" />
+			<column name="payment_proof" type="VARCHAR" length="255" jt="12" />
+			<index name="Pk_opportunities" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="leverages" >
+			<comment>the ways an opportunity creates passive income</comment>
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" />
+			<column name="description" type="TEXT" jt="-1" />
+			<index name="Pk_leverages" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="opportunity_leverages" >
+			<column name="opportunity_id" type="INT" jt="4" />
+			<column name="leverage_id" type="INT" jt="4" />
+			<index name="idx_opportunity_leverages" unique="NORMAL" >
+				<column name="leverage_id" />
+			</index>
+			<index name="idx_opportunity_leverages" unique="NORMAL" >
+				<column name="opportunity_id" />
+			</index>
+			<fk name="fk_opportunity_leverages" to_schema="Default" to_table="leverages" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="leverage_id" pk="id" />
+			</fk>
+			<fk name="fk_opportunity_leverages2" to_schema="Default" to_table="opportunities" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="opportunity_id" pk="id" />
+			</fk>
+		</table>
+		<table name="people" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" />
+			<column name="username" type="VARCHAR" length="100" jt="12" />
+			<column name="password" type="VARCHAR" length="100" jt="12" />
+			<column name="email" type="VARCHAR" length="100" jt="12" />
+			<column name="phone" type="VARCHAR" length="55" jt="12" />
+			<column name="referred_by" type="INT" jt="4" />
+			<index name="Pk_people" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="idx_people" unique="NORMAL" >
+				<column name="referred_by" />
+			</index>
+			<fk name="fk_people_people" to_schema="Default" to_table="people" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="referred_by" pk="id" />
+			</fk>
+		</table>
+		<table name="person_opportunities" >
+			<column name="opportunity_id" type="INT" jt="4" />
+			<column name="person_id" type="INT" jt="4" />
+			<column name="signup_link" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<index name="idx_person_opportunities" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<index name="idx_person_opportunities" unique="NORMAL" >
+				<column name="opportunity_id" />
+			</index>
+			<fk name="fk_person_opportunities_people" to_schema="Default" to_table="people" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="person_id" pk="id" />
+			</fk>
+			<fk name="fk_person_opportunities" to_schema="Default" to_table="opportunities" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="opportunity_id" pk="id" />
+			</fk>
+		</table>
+		<table name="social_site" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" />
+			<index name="Pk_social_site" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="person_social_site" >
+			<column name="person_id" type="INT" jt="4" />
+			<column name="social_site_id" type="INT" jt="4" />
+			<column name="url" type="VARCHAR" length="100" jt="12" />
+			<index name="idx_person_social_site" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<index name="idx_person_social_site" unique="NORMAL" >
+				<column name="social_site_id" />
+			</index>
+			<fk name="fk_person_social_site_people" to_schema="Default" to_table="people" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="person_id" pk="id" />
+			</fk>
+			<fk name="fk_person_social_site" to_schema="Default" to_table="social_site" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="social_site_id" pk="id" />
+			</fk>
+		</table>
+		<table name="business_presentations" >
+			<column name="opportunity_id" type="INT" jt="4" />
+			<column name="url" type="VARCHAR" length="255" jt="12" />
+			<column name="person_id" type="INT" jt="4" />
+			<index name="idx_business_presentations" unique="NORMAL" >
+				<column name="opportunity_id" />
+			</index>
+			<index name="idx_business_presentations_0" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<fk name="fk_business_presentations" to_schema="Default" to_table="opportunities" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="opportunity_id" pk="id" />
+			</fk>
+			<fk name="Fk_business_presentations_0" to_schema="Default" to_table="people" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="person_id" pk="id" />
+			</fk>
+		</table>
+		<table name="banners" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="person_id" type="INT" jt="4" />
+			<column name="banner_url" type="VARCHAR" length="200" jt="12" />
+			<column name="affiliate_url" type="VARCHAR" length="111" jt="12" />
+			<index name="Pk_banners" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="idx_banners" unique="NORMAL" >
+				<column name="person_id" />
+			</index>
+			<fk name="Fk_banners" to_schema="Default" to_table="people" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="person_id" pk="id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="the_eternal_spring" show_relation_columns="y" >
+		<entity schema="Default" name="leverages" x="520" y="260" />
+		<entity schema="Default" name="opportunity_leverages" x="299" y="260" />
+		<entity schema="Default" name="opportunities" x="312" y="416" />
+		<entity schema="Default" name="social_site" x="442" y="52" />
+		<entity schema="Default" name="business_presentations" x="65" y="429" />
+		<entity schema="Default" name="people" x="91" y="260" />
+		<entity schema="Default" name="banners" x="39" y="39" />
+		<entity schema="Default" name="person_social_site" x="169" y="52" />
+		<entity schema="Default" name="person_opportunities" x="702" y="364" />
+	</layout>
+</project>
