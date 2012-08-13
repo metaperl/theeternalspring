@@ -15,6 +15,7 @@
 			<column name="cost_max" type="INT" jt="4" />
 			<column name="profit_profile" type="TEXT" jt="-1" />
 			<column name="payment_proof" type="VARCHAR" length="255" jt="12" />
+			<column name="youtube_blurb" type="VARCHAR" length="111" jt="12" />
 			<index name="Pk_opportunities" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
@@ -139,12 +140,12 @@
 	<layout name="the_eternal_spring" show_relation_columns="y" >
 		<entity schema="Default" name="leverages" x="520" y="260" />
 		<entity schema="Default" name="opportunity_leverages" x="299" y="260" />
-		<entity schema="Default" name="opportunities" x="312" y="416" />
-		<entity schema="Default" name="social_site" x="442" y="52" />
 		<entity schema="Default" name="business_presentations" x="65" y="429" />
 		<entity schema="Default" name="people" x="91" y="260" />
 		<entity schema="Default" name="banners" x="39" y="39" />
 		<entity schema="Default" name="person_social_site" x="169" y="52" />
 		<entity schema="Default" name="person_opportunities" x="702" y="364" />
+		<entity schema="Default" name="opportunities" x="312" y="416" />
+		<entity schema="Default" name="social_site" x="442" y="52" />
 	</layout>
 </project>
